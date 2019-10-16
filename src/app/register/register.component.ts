@@ -9,8 +9,8 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
-  errorMessage: string
-  successMessage: string
+  // errorMessage: string
+  // successMessage: string
 
   // registerForm = this.fb.group({
   //   email: ['', Validators.required],
@@ -26,18 +26,11 @@ export class RegisterComponent implements OnInit {
       console.log(v);
     })
   }
-  // tryRegister(value){
-  //   this.authService.doRegister(value)
-  //   .then(res => {
-  //     console.log(res);
-  //     this.errorMessage = "";
-  //     this.successMessage = "Your account has been created";
-  //   }, err => {
-  //     console.log(err);
-  //     this.errorMessage = err.message;
-  //     this.successMessage = "";
-  //   })
-  // }
+  login(){
+    this.authService.anonymousLogin().then(v=>{
+     // console.log(v);
+    })
+  }
   
 
 }
