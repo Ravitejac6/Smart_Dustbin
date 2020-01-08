@@ -8,6 +8,8 @@ import { AuthService} from 'src/app/services/auth.service';
 })
 export class LoginComponent implements OnInit {
 
+
+
   items: Array<any>;
   constructor(public as :AuthService ) { }
   ngOnInit() {
@@ -16,6 +18,15 @@ export class LoginComponent implements OnInit {
     //     console.log(e.payload.doc.data()); 
     //   })
     // });
+  }
+
+  link(){
+    this.as.linkaccount();
+  }
+  logOut(){
+    this.as.loggedOut().then( v=>{
+      console.log(v);
+    })
   }
 
 }

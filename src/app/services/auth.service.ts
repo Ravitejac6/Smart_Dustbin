@@ -1,93 +1,123 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { AngularFireDatabase,AngularFireList } from '@angular/fire/database';
-import { AngularFirestoreCollection} from 'angularfire2/firestore';
+import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
+import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { getRandomString } from 'selenium-webdriver/safari';
-import {AngularFirestore} from '@angular/fire/firestore';
-import{ Router} from '@angular/router';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Router } from '@angular/router';
 //import{FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  // public  ref = firebase.database().ref();
-  // userslist : AngularFireList<any>;
-  // userArray : AngularFirestoreCollection<any>;
+  userData: any;
   constructor(private db: AngularFireDatabase,
-    private router:Router,private afAuth:AngularFireAuth,private af:AngularFirestore) {}
+    private router: Router, private afAuth: AngularFireAuth, private af: AngularFirestore, public as: AuthService, public zone: NgZone) {
+    this.afAuth.authState.subscribe(user => {
+      if (user) {
+        this.userData = user.uid;
+        localStorage.setItem('user', JSON.stringify(this.userData));
+        JSON.parse(localStorage.getItem('user'));
+      } else {
+        localStorage.setItem('user', null);
+        JSON.parse(localStorage.getItem('user'));
+      }
+    });
 
+  }
 
-    // searchUsers(searchValue){
-    //   return this.af.collection('users',ref => ref.where('PENUGONDA NAGA VENKATA RAVITEJA', '==', searchValue)
-    //     .where('PENUGONDA NAGA VENKATA RAVITEJA', '==', searchValue + '\uf8ff'))
-    //     .snapshotChanges()
-    // }
+  public readonly ref = firebase.database().ref();
 
-    public readonly ref = firebase.database().ref();
-
-  doGoogleLogin(){
-    return new Promise<any>((resolve, reject) => {
-      let provider = new firebase.auth.GoogleAuthProvider();
-      provider.addScope('profile');
-      provider.addScope('email');
-      this.afAuth.auth
+  doGoogleLogin() {
+    let provider = new firebase.auth.GoogleAuthProvider();
+    provider.addScope('profile');
+    provider.addScope('email');
+    this.afAuth.auth
       .signInWithPopup(provider)
       .then(res => {
-        resolve(res);
-        //console.log(res.additionalUserInfo.profile['name']);
-        var obj={
-          data : res.additionalUserInfo.profile['name'],
-          number : this.getRandomSpan().toString()
-        }
-        this.af.collection('users').add(obj);
-        let val = "penugonda naga venkata raviteja";
-        //console.log(this.ref.child("users"));
-        console.log(typeof(val));
-        var ref = firebase.database().ref("users/"+val);
-        console.log(ref);
-        ref.once("value",snapshot=>{
-          if(snapshot.child("data").exists()){
-            console.log("Exists");
+        console.log(res);
+        let r = res.user.uid;
+        var docref = this.af.collection('UID').doc(r);
+        docref.get().subscribe(doc => {
+          if (doc.exists) {
+            this.af.collection("UID").doc(r).update({
+              name: res.user.email,
+              arr: firebase.firestore.FieldValue.arrayUnion(this.getRandomSpan())
+            })
+            console.log('Yes');
           }
-        });
-        // this.ref.child("users").orderByChild("data").equalTo("PENUGONDA NAGA VENKATA RAVITEJA").once("value",snapshot => {
-        //   console.log(snapshot);
-        //   if (snapshot.exists()){
-        //     const userData = snapshot.val();
-        //     console.log("exists!", userData);
-        //   }
-        // });
-        //console.log("Not Exists!");
-        this.router.navigate(['/login']);
+          else {
+            this.af.collection("UID").doc(r).set({
+              name: res.user.email,
+              arr: firebase.firestore.FieldValue.arrayUnion(this.getRandomSpan())
+            })
+            console.log('No');
+          }
+        })
       })
-      
-    })
-    
+
   }
+
 
   getUsers() {
     return this.af.collection('users').snapshotChanges();
   }
-  
-  
+
+
 
   getRandomSpan() {
-    return Math.floor((Math.random()*6)+1);
+    return Math.floor((Math.random() * 6) + 1);
   }
-  anonymousLogin(){
-    return new Promise<any>((resolve,reject)=>{
-      let s =firebase.auth().signInAnonymously();
-      console.log(s);
-      console.log(this.getRandomSpan());
-    // return this.db.collection('users').add({
 
+  anonymousLogin() {
+    this.zone.run(() => {
+      this.afAuth.auth.signInAnonymously().then(user => {
+        if (!localStorage.getItem(user.user.uid) ==null) {
+            localStorage.setItem('user', user.user.uid);
+            this.af.collection("UID").doc(user.user.uid).set({
+              uid: user.user.uid,
+              arr: firebase.firestore.FieldValue.arrayUnion(this.getRandomSpan()),
+          })
+        }
+          else{
+            this.af.collection("UID").doc(user.user.uid).update({
+              uid: user.user.uid,
+              arr: firebase.firestore.FieldValue.arrayUnion(this.getRandomSpan()),
+            })
+          }
+        this.router.navigate(['/login']);
+      })
+    })
+
+  }
+
+  linkaccount(){
+    var provider = new firebase.auth.GoogleAuthProvider();
+        this.afAuth.auth.currentUser.linkWithPopup(provider).then(function(result) {
+          // Accounts successfully linked.
+          var credential = result.credential;
+          var user = result.user;
+          console.log("linked successfully");
+          console.log(credential + " "+ user);
+        }).catch(function(error) {
+              console.log("account already exists ");
+         });
+      }
+
+
+  loggedOut() {
+    return new Promise<any>((resolve, reject) => {
+      return firebase.auth().signOut().then(function () {
+        localStorage.removeItem('user');
+        this.router.navigate(['/register']);
+        console.log("Successfully Log Out");
+      }).catch(function (error) {
+        console.log("Error occured");
+      });
     })
   }
 
-  
 
-  
-  // signInAnonymously(): Promise<firebase.auth.UserCredential>; src:firebase index.d.ts
 }

@@ -7,8 +7,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'dustbin';
-  lat = 51.678418;
-  lng = 7.809007;
-  lat1 = 51.123456;
-  lng1 = 35.123456;
+  lat = 16.5665;
+  lng = 81.5228;
+  lat1 = 16.5660;
+  lng1 = 81.5225;
+  lat2 = 16.5663;
+  lng2 = 81.5223;
+
 }

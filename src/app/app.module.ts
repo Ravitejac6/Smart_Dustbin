@@ -11,6 +11,10 @@ import { RegisterComponent } from './register/register.component';
 import { AppRoutingModule } from './app-routing.module';
 import {AgmCoreModule} from '@agm/core';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
+import {MatButtonModule} from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -32,7 +36,8 @@ import { AngularFireDatabaseModule } from 'angularfire2/database';
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAhusDEobqFjkf5_U328gcU48GbZe_A58Q'
-    })
+    }),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
