@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyA6AhJWcVefR-mPViA5Mo5bwLO4NEPFoPo",
+    apiKey: ,
     authDomain: "smartdustbin-vit.firebaseapp.com",
     databaseURL: "https://smartdustbin-vit.firebaseio.com",
     projectId: "smartdustbin-vit",
