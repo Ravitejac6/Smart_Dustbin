@@ -2,8 +2,6 @@ import { Injectable, NgZone } from '@angular/core';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
-import { AngularFirestoreCollection } from 'angularfire2/firestore';
-import { getRandomString } from 'selenium-webdriver/safari';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
 //import{FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2/database-deprecated';
@@ -82,10 +80,10 @@ export class AuthService {
           })
         }
           else{
-            this.af.collection("UID").doc(user.user.uid).update({
+            this.af.collection("UID").doc(user.user.uid).set({
               uid: user.user.uid,
               arr: firebase.firestore.FieldValue.arrayUnion(this.getRandomSpan()),
-            })
+            },{merge : true})
           }
         this.router.navigate(['/login']);
       })
