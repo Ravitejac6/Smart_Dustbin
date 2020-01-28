@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import * as firebase from 'firebase/app';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 
@@ -13,7 +12,7 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
 
 
-  constructor(private fb:FormBuilder,private authService:AuthService,public router:Router) { }
+  constructor(private authService:AuthService,public router:Router) { }
 
   ngOnInit() {
   }
@@ -23,6 +22,7 @@ export class RegisterComponent implements OnInit {
   }
   login(){
     this.authService.anonymousLogin();
+    this.router.navigate(['/login']);
   } 
 }
 export class AppRegister{

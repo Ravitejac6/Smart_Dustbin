@@ -4,6 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+
 //import{FirebaseListObservable,FirebaseObjectObservable} from 'angularfire2/database-deprecated';
 @Injectable({
   providedIn: 'root'
@@ -54,6 +55,7 @@ export class AuthService {
             console.log('No');
           }
         })
+       // this.router.navigate(['/login',r]);
       })
 
   }
@@ -85,7 +87,7 @@ export class AuthService {
               arr: firebase.firestore.FieldValue.arrayUnion(this.getRandomSpan()),
             },{merge : true})
           }
-        this.router.navigate(['/login']);
+        
       })
     })
 

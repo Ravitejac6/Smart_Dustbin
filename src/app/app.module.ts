@@ -13,14 +13,16 @@ import {AgmCoreModule} from '@agm/core';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import {MatButtonModule} from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatIconModule } from '@angular/material';
+import { MatIconModule,MatCardModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserComponent } from './user/user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    UserComponent
   ],
   imports: [
     BrowserModule,
@@ -31,7 +33,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     //AngularFirestore,
     AngularFireModule,
     AppRoutingModule,
-    //AngularFireAuth,
+   // AngularFireAuth,
+    MatButtonModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatCardModule,
     FormsModule,
     ReactiveFormsModule,
     AgmCoreModule.forRoot({
