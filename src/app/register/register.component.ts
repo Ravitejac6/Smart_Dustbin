@@ -22,7 +22,7 @@ export class RegisterComponent implements OnInit {
   }
   login(){
     this.authService.anonymousLogin();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/user']);
   } 
 }
 export class AppRegister{

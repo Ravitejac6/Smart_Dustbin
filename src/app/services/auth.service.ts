@@ -27,7 +27,7 @@ export class AuthService {
 
   }
 
-  public readonly ref = firebase.database().ref();
+  //public readonly ref = firebase.database().ref();
 
   doGoogleLogin() {
     let provider = new firebase.auth.GoogleAuthProvider();
@@ -55,7 +55,7 @@ export class AuthService {
             console.log('No');
           }
         })
-       // this.router.navigate(['/login',r]);
+       this.router.navigate(['/login',r]);
       })
 
   }
