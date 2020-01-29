@@ -1,3 +1,6 @@
+agm-map {
+  height: 700px;
+}
 .bg{
     position: relative;
     background-repeat: no-repeat;
@@ -23,4 +26,11 @@
     left: 46.25%;
     padding : 0px 85px;
     border: 2px solid rgb(160, 155, 155);
+}
+.submitbutton{
+  margin-top: 20%;
+}
+.image1{
+  background-image: url("emoji.png");
+  background-size: cover;
 }
